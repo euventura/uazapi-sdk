@@ -3,6 +3,7 @@
 namespace UazApi;
 
 use Saloon\Http\Response;
+use UazApi\Requests\Message\SendButtonsRequest;
 use UazApi\Requests\Message\SendContactRequest;
 use UazApi\Requests\Message\SendLocationRequest;
 use UazApi\Requests\Message\SendMediaRequest;
@@ -46,10 +47,6 @@ class UazapiMessage extends UazapiResource
      * Enviar mensagem de texto
      *
      * Envia uma mensagem de texto simples ou com preview de links.
-     * Suporta placeholders dinâmicos que são substituídos automaticamente:
-     * - {{name}}, {{first_name}}: Nome do contato
-     * - {{lead_*}}: Campos do lead (email, telefone, etc)
-     * - Campos personalizados via fieldsMap
      *
      * Opções específicas de texto (via $options):
      * - linkPreview: Ativa preview de links (bool)
@@ -61,7 +58,14 @@ class UazapiMessage extends UazapiResource
      * @param string $number Número do destinatário no formato internacional (ex: 5511999999999)
      *                       Para grupos, use o ID do grupo (ex: 120363012345678901@g.us)
      * @param string $text Texto da mensagem (aceita placeholders como {{name}})
-     * @param array<string, mixed> $options Opções adicionais de envio e preview
+     * @param array<string, mixed> $choices aceitos no formato: "choices": [
+     * "[Eletrônicos]",
+     * "Smartphones|phones|Últimos lançamentos",
+     * "Notebooks|notes|Modelos 2024",
+     * "[Acessórios]",
+     * "Fones|fones|Bluetooth e com fio",
+     * "Capas|cases|Proteção para seu device"
+     * ]
      *
      * @return Response Resposta com dados da mensagem enviada
      *
@@ -96,11 +100,155 @@ class UazapiMessage extends UazapiResource
      * ]);
      * ```
      */
-    public function sendText(string $number, string $text, array $options = []): Response
+    public function sendText(string  $number,
+                             string  $text,
+                             array   $choices,
+                             ?bool   $linkPreview = null,
+                             ?string $linkPreviewTitle = null,
+                             ?string $linkPreviewDescription = null,
+                             ?string $linkPreviewImage = null,
+                             ?bool   $linkPreviewLarge = null,
+                             ?string $replyid = null,
+                             ?string $mentions = null,
+                             ?bool   $readchat = null,
+                             ?bool   $readmessages = null,
+                             ?int    $messageDelay = null,
+                             ?bool   $forward = null,
+                             ?string $track_source = null,
+                             ?string $track_id = null): Response
     {
         return $this->send(new SendTextRequest(
             $number,
-            $text
+            $text,
+            $choices,
+            $linkPreview,
+            $linkPreviewTitle,
+            $linkPreviewDescription,
+            $linkPreviewImage,
+            $linkPreviewLarge,
+            $replyid,
+            $mentions,
+            $readchat,
+            $readmessages,
+            $messageDelay,
+            $forward,
+            $track_source,
+            $track_id
+        ));
+    }
+
+    /**
+     * Enviar mensagem com botões / choice list
+     *
+     * Envia uma mensagem com botões interativos ou uma lista para seleção.
+     * Suporta até várias opções definidas em \$choices (array de textos ou objetos).
+     *
+     * Opções específicas (via parâmetros):
+     * - footerText: Texto de rodapé exibido abaixo dos botões/lista
+     * - listButton: Texto do botão de abertura da lista (quando aplicável)
+     * - selectableCount: Quantidade de itens selecionáveis (quando aplicável)
+     *
+     * Opções comuns (via parâmetros finais):
+     * - replyid: ID da mensagem para responder
+     * - mentions: Números para mencionar (separados por vírgula ou "all")
+     * - readchat: Marca conversa como lida
+     * - readmessages: Marca mensagens recebidas como lidas
+     * - messageDelay: Atraso em ms antes do envio (mostra "digitando...")
+     * - forward: Marca mensagem como encaminhada
+     * - track_source: Origem do rastreamento
+     * - track_id: ID de rastreamento
+     *
+     * @param string $number Número do destinatário no formato internacional (ex: 5511999999999)
+     * @param string $text Texto principal da mensagem que acompanha os botões/lista
+     * @param array<int, mixed> $choices Array com as opções/botões (strings ou arrays estruturados)
+     * @param string|null $footerText Texto do rodapé (opcional)
+     * @param string|null $listButton Texto do botão da lista (opcional)
+     * @param string|null $selectableCount Quantidade selecionável em listas (opcional)
+     * @param string|null $replyid ID da mensagem para responder (opcional)
+     * @param string|null $mentions Números para mencionar ou "all" (opcional)
+     * @param bool|null $readchat Marca conversa como lida (opcional)
+     * @param bool|null $readmessages Marca mensagens como lidas (opcional)
+     * @param int|null $messageDelay Atraso em ms antes do envio (opcional)
+     * @param bool|null $forward Marca como encaminhada (opcional)
+     * @param string|null $track_source Origem do rastreamento (opcional)
+     * @param string|null $track_id ID do rastreamento (opcional)
+     *
+     * @return Response Resposta com dados da mensagem enviada
+     *
+     * @example
+     * ```php
+     * // Botões simples
+     * $message->sendButtons('5511999999999', 'Escolha uma opção:', [
+     *     'Sim', 'Não', 'Talvez'
+     * ], 'Rodapé opcional');
+     *
+     * // Lista com botão de abertura
+     * $message->sendButtons('5511999999999', 'Selecione:', $items, null, 'Abrir lista', '1');
+     * ```
+     */
+    public function sendButtons(string  $number,
+                                string  $text,
+                                array   $choices,
+                                ?string $footerText = null,
+                                ?string $listButton = null,
+                                ?string $selectableCount = null,
+                                ?string $replyid = null,
+                                ?string $mentions = null,
+                                ?bool   $readchat = null,
+                                ?bool   $readmessages = null,
+                                ?int    $messageDelay = null,
+                                ?bool   $forward = null,
+                                ?string $track_source = null,
+                                ?string $track_id = null): Response
+    {
+        return $this->send(new SendButtonsRequest(
+            $number,
+            $text,
+            $choices,
+            $footerText,
+            $listButton,
+            $selectableCount,
+            $replyid,
+            $mentions,
+            $readchat,
+            $readmessages,
+            $messageDelay,
+            $forward,
+            $track_source,
+            $track_id,
+        ));
+    }
+
+    public function sendButtons(string  $number,
+                                string  $text,
+                                array   $choices,
+                                ?string $footerText = null,
+                                ?string $listButton = null,
+                                ?string $selectableCount = null,
+                                ?string $replyid = null,
+                                ?string $mentions = null,
+                                ?bool   $readchat = null,
+                                ?bool   $readmessages = null,
+                                ?int    $messageDelay = null,
+                                ?bool   $forward = null,
+                                ?string $track_source = null,
+                                ?string $track_id = null): Response
+    {
+        return $this->send(new SendButtonsRequest(
+            $number,
+            $text,
+            $choices,
+            $footerText,
+            $listButton,
+            $selectableCount,
+            $replyid,
+            $mentions,
+            $readchat,
+            $readmessages,
+            $messageDelay,
+            $forward,
+            $track_source,
+            $track_id,
         ));
     }
 

@@ -16,6 +16,7 @@ class SendTextRequest extends Request implements HasBody
     public function __construct(
         protected string  $number,
         protected string  $text,
+        protected array $choices,
         protected ?bool   $linkPreview = null,
         protected ?string $linkPreviewTitle = null,
         protected ?string $linkPreviewDescription = null,
