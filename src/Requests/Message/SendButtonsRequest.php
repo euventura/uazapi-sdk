@@ -44,6 +44,7 @@ class SendButtonsRequest extends Request implements HasBody
             'number' => $this->number,
             'text' => $this->text,
             'choices' => $this->choices,
+            'type' => $this->type,
             'footerText' => $this->footerText,
             'listButton' => $this->listButton,
             'selectableCount' => $this->selectableCount,
