@@ -219,39 +219,6 @@ class UazapiMessage extends UazapiResource
         ));
     }
 
-    public function sendButtons(string  $number,
-                                string  $text,
-                                array   $choices,
-                                ?string $footerText = null,
-                                ?string $listButton = null,
-                                ?string $selectableCount = null,
-                                ?string $replyid = null,
-                                ?string $mentions = null,
-                                ?bool   $readchat = null,
-                                ?bool   $readmessages = null,
-                                ?int    $messageDelay = null,
-                                ?bool   $forward = null,
-                                ?string $track_source = null,
-                                ?string $track_id = null): Response
-    {
-        return $this->send(new SendButtonsRequest(
-            $number,
-            $text,
-            $choices,
-            $footerText,
-            $listButton,
-            $selectableCount,
-            $replyid,
-            $mentions,
-            $readchat,
-            $readmessages,
-            $messageDelay,
-            $forward,
-            $track_source,
-            $track_id,
-        ));
-    }
-
     /**
      * Enviar imagem
      *
