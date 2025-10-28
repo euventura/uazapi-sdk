@@ -3,6 +3,13 @@
   "description": "SDK do UazApi para integração com APIs usando Saloon",
   "type": "library",
   "license": "MIT",
+  "keywords": [
+    "whatsapp",
+    "uatizap",
+    "whatsapp api",
+    "api",
+    "whatsapp-api"
+  ],
   "authors": [
     {
       "name": "euventura",
@@ -28,10 +35,5 @@
     }
   },
   "minimum-stability": "stable",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.0-dev"
-    }
-  }
+  "prefer-stable": true
 }
