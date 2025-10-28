@@ -17,6 +17,7 @@ class SendButtonsRequest extends Request implements HasBody
         protected string  $number,
         protected string  $text,
         protected array   $choices,
+        protected string $type,
         protected ?string $footerText = null,
         protected ?string $listButton = null,
         protected ?string $selectableCount = null,
