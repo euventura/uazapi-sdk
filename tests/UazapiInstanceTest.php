@@ -2,7 +2,6 @@
 
 namespace UazApi\Tests;
 
-use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use UazApi\UazapiInstance;
 
@@ -29,9 +28,9 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->instance->connect();
+        $data = $this->instance->connect();
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -47,9 +46,9 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->instance->connect('5511999999999');
+        $data = $this->instance->connect('5511999999999');
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -65,10 +64,10 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->instance->disconnect();
+        $data = $this->instance->disconnect();
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('Disconnected', $response->json()['response']);
+        $this->assertIsArray($data);
+        $this->assertEquals('Disconnected', $data['response']);
     }
 
     /** @test */
@@ -78,10 +77,9 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make($this->mockInstanceData(), 200)
         );
 
-        $response = $this->instance->status();
+        $data = $this->instance->status();
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertArrayHasKey('instance', $data);
         $this->assertArrayHasKey('status', $data);
         $this->assertTrue($data['status']['connected']);
@@ -99,10 +97,10 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->instance->delete();
+        $data = $this->instance->delete();
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('Instance Deleted', $response->json()['response']);
+        $this->assertIsArray($data);
+        $this->assertEquals('Instance Deleted', $data['response']);
     }
 
     /** @test */
@@ -115,10 +113,10 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->instance->updateName('Updated Instance Name');
+        $data = $this->instance->updateName('Updated Instance Name');
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('Updated Instance Name', $response->json()['instance']['name']);
+        $this->assertIsArray($data);
+        $this->assertEquals('Updated Instance Name', $data['instance']['name']);
     }
 
     /** @test */
@@ -138,10 +136,9 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->instance->getPrivacy();
+        $data = $this->instance->getPrivacy();
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('contacts', $data['groupadd']);
         $this->assertEquals('all', $data['readreceipts']);
     }
@@ -159,10 +156,9 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make($privacySettings, 200)
         );
 
-        $response = $this->instance->updatePrivacy($privacySettings);
+        $data = $this->instance->updatePrivacy($privacySettings);
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('none', $data['groupadd']);
         $this->assertEquals('contacts', $data['status']);
     }
@@ -174,10 +170,9 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make(['error' => 'Connection failed'], 500)
         );
 
-        $response = $this->instance->connect();
+        $data = $this->instance->connect();
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(500, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -187,11 +182,10 @@ class UazapiInstanceTest extends TestCase
             MockResponse::make(['error' => 'Invalid token'], 401)
         );
 
-        $response = $this->instance->status();
+        $data = $this->instance->status();
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(401, $response->status());
-        $this->assertEquals('Invalid token', $response->json()['error']);
+        $this->assertArrayHasKey('error', $data);
+        $this->assertEquals('Invalid token', $data['error']);
     }
 }
 

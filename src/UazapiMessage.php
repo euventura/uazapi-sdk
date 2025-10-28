@@ -2,7 +2,6 @@
 
 namespace UazApi;
 
-use Saloon\Http\Response;
 use UazApi\Requests\Message\SendButtonsRequest;
 use UazApi\Requests\Message\SendContactRequest;
 use UazApi\Requests\Message\SendLocationRequest;
@@ -67,7 +66,7 @@ class UazapiMessage extends UazapiResource
      * "Capas|cases|Proteção para seu device"
      * ]
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -102,7 +101,7 @@ class UazapiMessage extends UazapiResource
      */
     public function sendText(string  $number,
                              string  $text,
-                             array   $choices,
+                             array   $choices = [],
                              ?bool   $linkPreview = null,
                              ?string $linkPreviewTitle = null,
                              ?string $linkPreviewDescription = null,
@@ -115,7 +114,7 @@ class UazapiMessage extends UazapiResource
                              ?int    $messageDelay = null,
                              ?bool   $forward = null,
                              ?string $track_source = null,
-                             ?string $track_id = null): Response
+                             ?string $track_id = null): ?array
     {
         return $this->send(new SendTextRequest(
             $number,
@@ -173,7 +172,7 @@ class UazapiMessage extends UazapiResource
      * @param string|null $track_source Origem do rastreamento (opcional)
      * @param string|null $track_id ID do rastreamento (opcional)
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -199,7 +198,7 @@ class UazapiMessage extends UazapiResource
                                 ?int    $messageDelay = null,
                                 ?bool   $forward = null,
                                 ?string $track_source = null,
-                                ?string $track_id = null): Response
+                                ?string $track_id = null): ?array
     {
         return $this->send(new SendButtonsRequest(
             $number,
@@ -235,7 +234,7 @@ class UazapiMessage extends UazapiResource
      * @param string|null $caption Legenda/texto descritivo da imagem (aceita placeholders)
      * @param array<string, mixed> $options Opções adicionais de envio
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -256,7 +255,7 @@ class UazapiMessage extends UazapiResource
      * ]);
      * ```
      */
-    public function sendImage(string $number, string $file, ?string $caption = null, array $options = []): Response
+    public function sendImage(string $number, string $file, ?string $caption = null, array $options = []): ?array
     {
         return $this->sendMedia($number, 'image', $file, $caption, $options);
     }
@@ -279,7 +278,7 @@ class UazapiMessage extends UazapiResource
      * @param string|null $caption Legenda/texto descritivo do vídeo (aceita placeholders)
      * @param array<string, mixed> $options Opções adicionais de envio
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -296,7 +295,7 @@ class UazapiMessage extends UazapiResource
      * ]);
      * ```
      */
-    public function sendVideo(string $number, string $file, ?string $caption = null, array $options = []): Response
+    public function sendVideo(string $number, string $file, ?string $caption = null, array $options = []): ?array
     {
         return $this->sendMedia($number, 'video', $file, $caption, $options);
     }
@@ -322,7 +321,7 @@ class UazapiMessage extends UazapiResource
      * @param string|null $caption Legenda/texto descritivo (aceita placeholders)
      * @param array<string, mixed> $options Opções adicionais de envio
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -347,7 +346,7 @@ class UazapiMessage extends UazapiResource
      * );
      * ```
      */
-    public function sendDocument(string $number, string $file, ?string $docName = null, ?string $caption = null, array $options = []): Response
+    public function sendDocument(string $number, string $file, ?string $docName = null, ?string $caption = null, array $options = []): ?array
     {
         $options['docName'] = $docName;
         return $this->sendMedia($number, 'document', $file, $caption, $options);
@@ -371,7 +370,7 @@ class UazapiMessage extends UazapiResource
      * @param string $file URL pública ou base64 do áudio
      * @param array<string, mixed> $options Opções adicionais de envio
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -385,7 +384,7 @@ class UazapiMessage extends UazapiResource
      * ]);
      * ```
      */
-    public function sendAudio(string $number, string $file, array $options = []): Response
+    public function sendAudio(string $number, string $file, array $options = []): ?array
     {
         return $this->sendMedia($number, 'audio', $file, null, $options);
     }
@@ -406,7 +405,7 @@ class UazapiMessage extends UazapiResource
      * @param string $file URL pública ou base64 do áudio
      * @param array<string, mixed> $options Opções adicionais de envio
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -419,7 +418,7 @@ class UazapiMessage extends UazapiResource
      * ]);
      * ```
      */
-    public function sendVoice(string $number, string $file, array $options = []): Response
+    public function sendVoice(string $number, string $file, array $options = []): ?array
     {
         return $this->sendMedia($number, 'ptt', $file, null, $options);
     }
@@ -440,7 +439,7 @@ class UazapiMessage extends UazapiResource
      * @param string $file URL pública ou base64 do sticker (formato WEBP)
      * @param array<string, mixed> $options Opções adicionais de envio
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -454,7 +453,7 @@ class UazapiMessage extends UazapiResource
      * ]);
      * ```
      */
-    public function sendSticker(string $number, string $file, array $options = []): Response
+    public function sendSticker(string $number, string $file, array $options = []): ?array
     {
         return $this->sendMedia($number, 'sticker', $file, null, $options);
     }
@@ -480,7 +479,7 @@ class UazapiMessage extends UazapiResource
      * @param string|null $caption Legenda/texto descritivo (aceita placeholders)
      * @param array<string, mixed> $options Opções adicionais (docName para documents, etc)
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -494,7 +493,7 @@ class UazapiMessage extends UazapiResource
      * ]);
      * ```
      */
-    public function sendMedia(string $number, string $type, string $file, ?string $caption = null, array $options = []): Response
+    public function sendMedia(string $number, string $type, string $file, ?string $caption = null, array $options = []): ?array
     {
         return $this->send(new SendMediaRequest(
             number: $number,
@@ -527,7 +526,7 @@ class UazapiMessage extends UazapiResource
      * @param array<int, array<string, string>> $contacts Array de contatos com fullName, waid e phoneNumber
      * @param array<string, mixed> $options Opções adicionais de envio
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -563,7 +562,7 @@ class UazapiMessage extends UazapiResource
      * ]);
      * ```
      */
-    public function sendContact(string $number, array $contacts, array $options = []): Response
+    public function sendContact(string $number, array $contacts, array $options = []): ?array
     {
         return $this->send(new SendContactRequest(
             number: $number,
@@ -594,7 +593,7 @@ class UazapiMessage extends UazapiResource
      * @param string|null $address Endereço completo do local
      * @param array<string, mixed> $options Opções adicionais de envio
      *
-     * @return Response Resposta com dados da mensagem enviada
+     * @return ?array Resposta com dados da mensagem enviada
      *
      * @example
      * ```php
@@ -636,7 +635,7 @@ class UazapiMessage extends UazapiResource
         ?string $name = null,
         ?string $address = null,
         array   $options = []
-    ): Response
+    ): ?array
     {
         return $this->send(new SendLocationRequest(
             number: $number,

@@ -2,7 +2,6 @@
 
 namespace UazApi\Tests;
 
-use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use UazApi\UazapiProfile;
 
@@ -32,10 +31,9 @@ class UazapiProfileTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->profile->updateName('Minha Empresa');
+        $data = $this->profile->updateName('Minha Empresa');
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertTrue($data['success']);
         $this->assertEquals('Minha Empresa', $data['profile']['name']);
     }
@@ -50,10 +48,9 @@ class UazapiProfileTest extends TestCase
         );
 
         $longName = str_repeat('a', 30); // Mais de 25 caracteres
-        $response = $this->profile->updateName($longName);
+        $data = $this->profile->updateName($longName);
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(400, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -73,10 +70,9 @@ class UazapiProfileTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->profile->updateImage('https://exemplo.com/logo.jpg');
+        $data = $this->profile->updateImage('https://exemplo.com/logo.jpg');
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertTrue($data['profile']['image_updated']);
         $this->assertFalse($data['profile']['image_removed']);
     }
@@ -99,10 +95,10 @@ class UazapiProfileTest extends TestCase
         );
 
         $base64Image = 'data:image/jpeg;base64,/9j/4AAQSkZJRg...';
-        $response = $this->profile->updateImage($base64Image);
+        $data = $this->profile->updateImage($base64Image);
 
-        $this->assertTrue($response->successful());
-        $this->assertTrue($response->json()['profile']['image_updated']);
+        $this->assertIsArray($data);
+        $this->assertTrue($data['profile']['image_updated']);
     }
 
     /** @test */
@@ -122,10 +118,9 @@ class UazapiProfileTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->profile->removeImage();
+        $data = $this->profile->removeImage();
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertTrue($data['profile']['image_removed']);
         $this->assertFalse($data['profile']['image_updated']);
     }
@@ -139,10 +134,9 @@ class UazapiProfileTest extends TestCase
             ], 400)
         );
 
-        $response = $this->profile->updateImage('invalid-url');
+        $data = $this->profile->updateImage('invalid-url');
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(400, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -154,10 +148,9 @@ class UazapiProfileTest extends TestCase
             ], 413)
         );
 
-        $response = $this->profile->updateImage('https://exemplo.com/huge-image.jpg');
+        $data = $this->profile->updateImage('https://exemplo.com/huge-image.jpg');
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(413, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -167,11 +160,10 @@ class UazapiProfileTest extends TestCase
             MockResponse::make(['error' => 'No session'], 401)
         );
 
-        $response = $this->profile->updateName('Test Name');
+        $data = $this->profile->updateName('Test Name');
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(401, $response->status());
-        $this->assertEquals('No session', $response->json()['error']);
+        $this->assertArrayHasKey('error', $data);
+        $this->assertEquals('No session', $data['error']);
     }
 
     /** @test */
@@ -183,10 +175,9 @@ class UazapiProfileTest extends TestCase
             ], 403)
         );
 
-        $response = $this->profile->updateName('New Name');
+        $data = $this->profile->updateName('New Name');
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(403, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 }
 

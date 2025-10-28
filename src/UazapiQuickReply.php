@@ -2,7 +2,6 @@
 
 namespace UazApi;
 
-use Saloon\Http\Response;
 use UazApi\Requests\QuickReply\EditQuickReplyRequest;
 use UazApi\Requests\QuickReply\GetAllQuickRepliesRequest;
 
@@ -57,7 +56,7 @@ class UazapiQuickReply extends UazapiResource
      * - Origem (se foi criada pela API ou pelo WhatsApp)
      * - Datas de criação e atualização
      *
-     * @return Response Resposta com array de respostas rápidas
+     * @return ?arrayResposta com array de respostas rápidas
      *
      * @example
      * ```php
@@ -73,7 +72,7 @@ class UazapiQuickReply extends UazapiResource
      * }
      * ```
      */
-    public function getAll(): Response
+    public function getAll(): ?array
     {
         return $this->send(new GetAllQuickRepliesRequest());
     }
@@ -90,7 +89,7 @@ class UazapiQuickReply extends UazapiResource
      * @param string $shortCut Atalho único para identificar a resposta (ex: 'saudacao', 'despedida')
      * @param string $text Texto da resposta (pode conter quebras de linha)
      *
-     * @return Response Resposta com dados da resposta rápida criada
+     * @return ?arrayResposta com dados da resposta rápida criada
      *
      * @example
      * ```php
@@ -105,7 +104,7 @@ class UazapiQuickReply extends UazapiResource
      * $quickReply->createText('agradecimento', 'Muito obrigado! 😊');
      * ```
      */
-    public function createText(string $shortCut, string $text): Response
+    public function createText(string $shortCut, string $text): ?array
     {
         return $this->send(new EditQuickReplyRequest(
             shortCut: $shortCut,
@@ -133,7 +132,7 @@ class UazapiQuickReply extends UazapiResource
      * @param string $file URL pública ou base64 do arquivo
      * @param string|null $docName Nome do arquivo (obrigatório para tipo document)
      *
-     * @return Response Resposta com dados da resposta rápida criada
+     * @return ?arrayResposta com dados da resposta rápida criada
      *
      * @example
      * ```php
@@ -152,7 +151,7 @@ class UazapiQuickReply extends UazapiResource
      * $quickReply->createMedia('tutorial', 'video', 'https://exemplo.com/tutorial.mp4');
      * ```
      */
-    public function createMedia(string $shortCut, string $type, string $file, ?string $docName = null): Response
+    public function createMedia(string $shortCut, string $type, string $file, ?string $docName = null): ?array
     {
         return $this->send(new EditQuickReplyRequest(
             shortCut: $shortCut,
@@ -175,7 +174,7 @@ class UazapiQuickReply extends UazapiResource
      * @param string $shortCut Novo atalho
      * @param string $text Novo texto
      *
-     * @return Response Resposta com dados da resposta rápida atualizada
+     * @return ?arrayResposta com dados da resposta rápida atualizada
      *
      * @example
      * ```php
@@ -187,7 +186,7 @@ class UazapiQuickReply extends UazapiResource
      * );
      * ```
      */
-    public function updateText(string $id, string $shortCut, string $text): Response
+    public function updateText(string $id, string $shortCut, string $text): ?array
     {
         return $this->send(new EditQuickReplyRequest(
             shortCut: $shortCut,
@@ -212,7 +211,7 @@ class UazapiQuickReply extends UazapiResource
      * @param string $file Nova URL ou base64 do arquivo
      * @param string|null $docName Novo nome do documento (se aplicável)
      *
-     * @return Response Resposta com dados da resposta rápida atualizada
+     * @return ?arrayResposta com dados da resposta rápida atualizada
      *
      * @example
      * ```php
@@ -234,7 +233,7 @@ class UazapiQuickReply extends UazapiResource
      * );
      * ```
      */
-    public function updateMedia(string $id, string $shortCut, string $type, string $file, ?string $docName = null): Response
+    public function updateMedia(string $id, string $shortCut, string $type, string $file, ?string $docName = null): ?array
     {
         return $this->send(new EditQuickReplyRequest(
             shortCut: $shortCut,
@@ -256,7 +255,7 @@ class UazapiQuickReply extends UazapiResource
      *
      * @param string $id ID da resposta rápida a ser removida
      *
-     * @return Response Resposta confirmando a exclusão
+     * @return ?arrayResposta confirmando a exclusão
      *
      * @example
      * ```php
@@ -267,7 +266,7 @@ class UazapiQuickReply extends UazapiResource
      * }
      * ```
      */
-    public function delete(string $id): Response
+    public function delete(string $id): ?array
     {
         return $this->send(new EditQuickReplyRequest(
             shortCut: '',
@@ -299,7 +298,7 @@ class UazapiQuickReply extends UazapiResource
      * @param string|null $file URL ou base64 (obrigatório para tipos de mídia)
      * @param string|null $docName Nome do documento (opcional, para tipo document)
      *
-     * @return Response Resposta com resultado da operação
+     * @return ?arrayResposta com resultado da operação
      *
      * @example
      * ```php
@@ -331,7 +330,7 @@ class UazapiQuickReply extends UazapiResource
         ?string $text = null,
         ?string $file = null,
         ?string $docName = null
-    ): Response
+    ): ?array
     {
         return $this->send(new EditQuickReplyRequest(
             shortCut: $shortCut,

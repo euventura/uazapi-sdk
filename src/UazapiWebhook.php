@@ -2,7 +2,6 @@
 
 namespace UazApi;
 
-use Saloon\Http\Response;
 use UazApi\Requests\Webhook\ConfigureWebhookRequest;
 use UazApi\Requests\Webhook\GetWebhookRequest;
 
@@ -41,7 +40,7 @@ class UazapiWebhook extends UazapiResource
      * Retorna a lista de webhooks configurados para a instância,
      * incluindo URL, eventos ativos, filtros e outras configurações.
      *
-     * @return Response Resposta com array de webhooks configurados
+     * @return ?arrayResposta com array de webhooks configurados
      *
      * @example
      * ```php
@@ -56,7 +55,7 @@ class UazapiWebhook extends UazapiResource
      * }
      * ```
      */
-    public function get(): Response
+    public function get(): ?array
     {
         return $this->send(new GetWebhookRequest());
     }
@@ -99,7 +98,7 @@ class UazapiWebhook extends UazapiResource
      * @param bool $addUrlEvents Se true, adiciona o nome do evento na URL (/webhook/messages)
      * @param bool $addUrlTypesMessages Se true, adiciona o tipo de mensagem na URL
      *
-     * @return Response Resposta confirmando a configuração
+     * @return ?arrayResposta confirmando a configuração
      *
      * @example
      * ```php
@@ -128,7 +127,7 @@ class UazapiWebhook extends UazapiResource
         ?array $excludeMessages = null,
         bool   $addUrlEvents = false,
         bool   $addUrlTypesMessages = false
-    ): Response
+    ): ?array
     {
         return $this->send(new ConfigureWebhookRequest(
             url: $url,
@@ -155,7 +154,7 @@ class UazapiWebhook extends UazapiResource
      * @param bool $addUrlEvents Adicionar evento na URL
      * @param bool $addUrlTypesMessages Adicionar tipo de mensagem na URL
      *
-     * @return Response Resposta com o webhook criado incluindo seu ID
+     * @return ?arrayResposta com o webhook criado incluindo seu ID
      *
      * @example
      * ```php
@@ -177,7 +176,7 @@ class UazapiWebhook extends UazapiResource
         ?array $excludeMessages = null,
         bool   $addUrlEvents = false,
         bool   $addUrlTypesMessages = false
-    ): Response
+    ): ?array
     {
         return $this->send(new ConfigureWebhookRequest(
             url: $url,
@@ -206,7 +205,7 @@ class UazapiWebhook extends UazapiResource
      * @param bool $addUrlEvents Adicionar evento na URL
      * @param bool $addUrlTypesMessages Adicionar tipo de mensagem na URL
      *
-     * @return Response Resposta com o webhook atualizado
+     * @return ?arrayResposta com o webhook atualizado
      *
      * @example
      * ```php
@@ -225,7 +224,7 @@ class UazapiWebhook extends UazapiResource
         ?array $excludeMessages = null,
         bool   $addUrlEvents = false,
         bool   $addUrlTypesMessages = false
-    ): Response
+    ): ?array
     {
         return $this->send(new ConfigureWebhookRequest(
             url: $url,
@@ -249,7 +248,7 @@ class UazapiWebhook extends UazapiResource
      *
      * @param string $id ID do webhook a ser removido
      *
-     * @return Response Resposta confirmando a remoção
+     * @return ?arrayResposta confirmando a remoção
      *
      * @example
      * ```php
@@ -260,7 +259,7 @@ class UazapiWebhook extends UazapiResource
      * }
      * ```
      */
-    public function delete(string $id): Response
+    public function delete(string $id): ?array
     {
         return $this->send(new ConfigureWebhookRequest(
             url: '',

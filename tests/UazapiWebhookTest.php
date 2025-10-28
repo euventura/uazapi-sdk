@@ -2,7 +2,6 @@
 
 namespace UazApi\Tests;
 
-use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use UazApi\UazapiWebhook;
 
@@ -23,10 +22,9 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make($this->mockWebhookData(), 200)
         );
 
-        $response = $this->webhook->get();
+        $data = $this->webhook->get();
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertIsArray($data);
         $this->assertArrayHasKey('url', $data[0]);
         $this->assertEquals('https://example.com/webhook', $data[0]['url']);
@@ -49,14 +47,13 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->webhook->configure(
+        $data = $this->webhook->configure(
             'https://mysite.com/webhook',
             ['messages', 'connection'],
             excludeMessages: ['wasSentByApi']
         );
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('https://mysite.com/webhook', $data['url']);
         $this->assertContains('wasSentByApi', $data['excludeMessages']);
     }
@@ -78,15 +75,14 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->webhook->configure(
+        $data = $this->webhook->configure(
             'https://mysite.com/webhook',
             ['messages'],
             addUrlEvents: true,
             addUrlTypesMessages: true
         );
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertTrue($data['addUrlEvents']);
         $this->assertTrue($data['AddUrlTypesMessages']);
     }
@@ -106,13 +102,12 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->webhook->add(
+        $data = $this->webhook->add(
             'https://another-site.com/webhook',
             ['presence', 'groups']
         );
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertArrayHasKey('id', $data);
         $this->assertEquals('wh_new789', $data['id']);
     }
@@ -132,15 +127,14 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->webhook->update(
+        $data = $this->webhook->update(
             'wh_123',
             'https://updated-site.com/webhook',
             ['messages', 'connection', 'presence'],
             excludeMessages: ['wasSentByApi', 'isGroupYes']
         );
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('https://updated-site.com/webhook', $data['url']);
         $this->assertCount(3, $data['events']);
     }
@@ -157,10 +151,10 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->webhook->delete('wh_123');
+        $data = $this->webhook->delete('wh_123');
 
-        $this->assertTrue($response->successful());
-        $this->assertTrue($response->json()['success']);
+        $this->assertIsArray($data);
+        $this->assertTrue($data['success']);
     }
 
     /** @test */
@@ -177,14 +171,14 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->webhook->configure(
+        $data = $this->webhook->configure(
             'https://mysite.com/webhook',
             ['messages'],
             enabled: false
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertFalse($response->json()['enabled']);
+        $this->assertIsArray($data);
+        $this->assertFalse($data['enabled']);
     }
 
     /** @test */
@@ -194,10 +188,9 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make(['error' => 'Invalid URL'], 400)
         );
 
-        $response = $this->webhook->configure('invalid-url', ['messages']);
+        $data = $this->webhook->configure('invalid-url', ['messages']);
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(400, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -207,13 +200,12 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make(['error' => 'Invalid events'], 400)
         );
 
-        $response = $this->webhook->configure(
+        $data = $this->webhook->configure(
             'https://mysite.com/webhook',
             [] // Empty events array
         );
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(400, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -223,14 +215,13 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make(['error' => 'Webhook not found'], 404)
         );
 
-        $response = $this->webhook->update(
+        $data = $this->webhook->update(
             'wh_nonexistent',
             'https://mysite.com/webhook',
             ['messages']
         );
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(404, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -263,13 +254,13 @@ class UazapiWebhookTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->webhook->configure(
+        $data = $this->webhook->configure(
             'https://mysite.com/webhook',
             $allEvents
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertCount(13, $response->json()['events']);
+        $this->assertIsArray($data);
+        $this->assertCount(13, $data['events']);
     }
 }
 

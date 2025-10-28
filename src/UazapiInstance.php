@@ -2,7 +2,6 @@
 
 namespace UazApi;
 
-use Saloon\Http\Response;
 use UazApi\Requests\Instance\ConnectRequest;
 use UazApi\Requests\Instance\DeleteInstanceRequest;
 use UazApi\Requests\Instance\DisconnectRequest;
@@ -51,7 +50,7 @@ class UazapiInstance extends UazapiResource
      * @param string|null $phone Número de telefone no formato internacional (ex: 5511999999999)
      *                           Se não fornecido, gera QR Code. Se fornecido, gera código de pareamento.
      *
-     * @return Response Resposta com status da conexão, QR Code ou código de pareamento
+     * @return ?arrayResposta com status da conexão, QR Code ou código de pareamento
      *
      * @example
      * ```php
@@ -68,7 +67,7 @@ class UazapiInstance extends UazapiResource
      * }
      * ```
      */
-    public function connect(?string $phone = null): Response
+    public function connect(?string $phone = null): ?array
     {
         return $this->send(new ConnectRequest($phone));
     }
@@ -84,7 +83,7 @@ class UazapiInstance extends UazapiResource
      * - Desconectar: Mantém a instância, apenas encerra a sessão
      * - Deletar: Remove completamente a instância do sistema
      *
-     * @return Response Resposta confirmando a desconexão
+     * @return ?arrayResposta confirmando a desconexão
      *
      * @example
      * ```php
@@ -95,7 +94,7 @@ class UazapiInstance extends UazapiResource
      * }
      * ```
      */
-    public function disconnect(): Response
+    public function disconnect(): ?array
     {
         return $this->send(new DisconnectRequest());
     }
@@ -113,7 +112,7 @@ class UazapiInstance extends UazapiResource
      * - Verificar se a instância está online
      * - Identificar problemas de conexão
      *
-     * @return Response Resposta com status completo da instância
+     * @return ?arrayResposta com status completo da instância
      *
      * @example
      * ```php
@@ -127,7 +126,7 @@ class UazapiInstance extends UazapiResource
      * }
      * ```
      */
-    public function status(): Response
+    public function status(): ?array
     {
         return $this->send(new StatusRequest());
     }
@@ -143,7 +142,7 @@ class UazapiInstance extends UazapiResource
      * ATENÇÃO: Esta ação é irreversível! Após deletar, será necessário
      * criar uma nova instância para usar a API novamente.
      *
-     * @return Response Resposta confirmando a exclusão
+     * @return ?arrayResposta confirmando a exclusão
      *
      * @example
      * ```php
@@ -154,7 +153,7 @@ class UazapiInstance extends UazapiResource
      * }
      * ```
      */
-    public function delete(): Response
+    public function delete(): ?array
     {
         return $this->send(new DeleteInstanceRequest());
     }
@@ -171,7 +170,7 @@ class UazapiInstance extends UazapiResource
      *
      * @param string $name Novo nome para a instância (pode conter espaços e caracteres especiais)
      *
-     * @return Response Resposta com dados atualizados da instância
+     * @return ?arrayResposta com dados atualizados da instância
      *
      * @example
      * ```php
@@ -182,7 +181,7 @@ class UazapiInstance extends UazapiResource
      * }
      * ```
      */
-    public function updateName(string $name): Response
+    public function updateName(string $name): ?array
     {
         return $this->send(new UpdateInstanceNameRequest($name));
     }
@@ -200,7 +199,7 @@ class UazapiInstance extends UazapiResource
      * - Fazer chamadas
      * - Receber confirmação de leitura
      *
-     * @return Response Resposta com todas as configurações de privacidade
+     * @return ?arrayResposta com todas as configurações de privacidade
      *
      * @example
      * ```php
@@ -214,7 +213,7 @@ class UazapiInstance extends UazapiResource
      * }
      * ```
      */
-    public function getPrivacy(): Response
+    public function getPrivacy(): ?array
     {
         return $this->send(new GetPrivacyRequest());
     }
@@ -236,7 +235,7 @@ class UazapiInstance extends UazapiResource
      *
      * @param array<string, string> $privacySettings Array associativo com as configurações
      *
-     * @return Response Resposta com as configurações atualizadas
+     * @return ?arrayResposta com as configurações atualizadas
      *
      * @example
      * ```php
@@ -257,7 +256,7 @@ class UazapiInstance extends UazapiResource
      * }
      * ```
      */
-    public function updatePrivacy(array $privacySettings): Response
+    public function updatePrivacy(array $privacySettings): ?array
     {
         return $this->send(new UpdatePrivacyRequest($privacySettings));
     }

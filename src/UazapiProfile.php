@@ -2,7 +2,6 @@
 
 namespace UazApi;
 
-use Saloon\Http\Response;
 use UazApi\Requests\Profile\UpdateProfileImageRequest;
 use UazApi\Requests\Profile\UpdateProfileNameRequest;
 
@@ -44,7 +43,7 @@ class UazapiProfile extends UazapiResource
      *
      * @param string $name Novo nome do perfil (máximo 25 caracteres)
      *
-     * @return Response Resposta confirmando a alteração com timestamp
+     * @return ?arrayResposta confirmando a alteração com timestamp
      *
      * @example
      * ```php
@@ -56,7 +55,7 @@ class UazapiProfile extends UazapiResource
      * }
      * ```
      */
-    public function updateName(string $name): Response
+    public function updateName(string $name): ?array
     {
         return $this->send(new UpdateProfileNameRequest($name));
     }
@@ -79,7 +78,7 @@ class UazapiProfile extends UazapiResource
      *
      * @param string $image URL da imagem, base64 ou "remove"/"delete" para remover
      *
-     * @return Response Resposta confirmando a alteração
+     * @return ?arrayResposta confirmando a alteração
      *
      * @example
      * ```php
@@ -93,7 +92,7 @@ class UazapiProfile extends UazapiResource
      * $profile->updateImage('remove');
      * ```
      */
-    public function updateImage(string $image): Response
+    public function updateImage(string $image): ?array
     {
         return $this->send(new UpdateProfileImageRequest($image));
     }
@@ -106,7 +105,7 @@ class UazapiProfile extends UazapiResource
      *
      * Este método é um atalho para updateImage('remove').
      *
-     * @return Response Resposta confirmando a remoção
+     * @return ?arrayResposta confirmando a remoção
      *
      * @example
      * ```php
@@ -117,7 +116,7 @@ class UazapiProfile extends UazapiResource
      * }
      * ```
      */
-    public function removeImage(): Response
+    public function removeImage(): ?array
     {
         return $this->send(new UpdateProfileImageRequest('remove'));
     }

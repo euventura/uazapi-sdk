@@ -2,7 +2,6 @@
 
 namespace UazApi\Tests;
 
-use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use UazApi\UazapiMessage;
 
@@ -23,10 +22,8 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText('5511999999999', 'Olá!');
+        $data = $this->message->sendText('5511999999999', 'Olá!');
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
         $this->assertEquals('text', $data['messageType']);
         $this->assertEquals('Test message', $data['text']);
     }
@@ -41,13 +38,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '5511999999999',
             'Confira: https://exemplo.com',
             ['linkPreview' => true]
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -57,7 +54,7 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '5511999999999',
             'https://exemplo.com',
             [
@@ -69,7 +66,7 @@ class UazapiMessageTest extends TestCase
             ]
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -79,13 +76,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '5511999999999',
             'Mensagem com delay',
             ['delay' => 2000]
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -95,13 +92,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '120363012345678901@g.us',
             'Olá @todos!',
             ['mentions' => 'all']
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -111,13 +108,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '5511999999999',
             'Respondendo sua mensagem',
             ['replyid' => '3EB0538DA65A59F6D8A251']
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -130,13 +127,12 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendImage(
+        $data = $this->message->sendImage(
             '5511999999999',
             'https://exemplo.com/foto.jpg'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('image', $response->json()['messageType']);
+        $this->assertEquals('image', $data['messageType']);
     }
 
     /** @test */
@@ -150,14 +146,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendImage(
+        $data = $this->message->sendImage(
             '5511999999999',
             'https://exemplo.com/foto.jpg',
             'Veja esta foto!'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('Veja esta foto!', $response->json()['text']);
+        $this->assertEquals('Veja esta foto!', $data['text']);
     }
 
     /** @test */
@@ -170,14 +165,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendVideo(
+        $data = $this->message->sendVideo(
             '5511999999999',
             'https://exemplo.com/video.mp4',
             'Confira este vídeo!'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('video', $response->json()['messageType']);
+        $this->assertEquals('video', $data['messageType']);
     }
 
     /** @test */
@@ -190,15 +184,14 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendDocument(
+        $data = $this->message->sendDocument(
             '5511999999999',
             'https://exemplo.com/doc.pdf',
             'Documento.pdf',
             'Segue o documento'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('document', $response->json()['messageType']);
+        $this->assertEquals('document', $data['messageType']);
     }
 
     /** @test */
@@ -211,13 +204,12 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendAudio(
+        $data = $this->message->sendAudio(
             '5511999999999',
             'https://exemplo.com/audio.mp3'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('audio', $response->json()['messageType']);
+        $this->assertEquals('audio', $data['messageType']);
     }
 
     /** @test */
@@ -230,13 +222,12 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendVoice(
+        $data = $this->message->sendVoice(
             '5511999999999',
             'https://exemplo.com/voice.ogg'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('ptt', $response->json()['messageType']);
+        $this->assertEquals('ptt', $data['messageType']);
     }
 
     /** @test */
@@ -249,13 +240,12 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendSticker(
+        $data = $this->message->sendSticker(
             '5511999999999',
             'https://exemplo.com/sticker.webp'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('sticker', $response->json()['messageType']);
+        $this->assertEquals('sticker', $data['messageType']);
     }
 
     /** @test */
@@ -276,9 +266,9 @@ class UazapiMessageTest extends TestCase
             ]
         ];
 
-        $response = $this->message->sendContact('5511999999999', $contacts);
+        $data = $this->message->sendContact('5511999999999', $contacts);
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -291,7 +281,7 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->message->sendLocation(
+        $data = $this->message->sendLocation(
             '5511999999999',
             -23.5505199,
             -46.6333094,
@@ -299,8 +289,7 @@ class UazapiMessageTest extends TestCase
             'Av. Paulista, 1578 - Bela Vista, São Paulo - SP'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('location', $response->json()['messageType']);
+        $this->assertEquals('location', $data['messageType']);
     }
 
     /** @test */
@@ -310,7 +299,7 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '5511999999999',
             'Mensagem rastreada',
             [
@@ -319,7 +308,7 @@ class UazapiMessageTest extends TestCase
             ]
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -329,13 +318,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '5511999999999',
             'Teste',
             ['readchat' => true]
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -345,13 +334,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '5511999999999',
             'Teste',
             ['readmessages' => true]
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -361,13 +350,13 @@ class UazapiMessageTest extends TestCase
             MockResponse::make($this->mockMessageData(), 200)
         );
 
-        $response = $this->message->sendText(
+        $data = $this->message->sendText(
             '5511999999999',
             'Mensagem encaminhada',
             ['forward' => true]
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -377,10 +366,9 @@ class UazapiMessageTest extends TestCase
             MockResponse::make(['error' => 'Invalid number'], 400)
         );
 
-        $response = $this->message->sendText('invalid', 'Test');
+        $data = $this->message->sendText('invalid', 'Test');
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(400, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -390,9 +378,9 @@ class UazapiMessageTest extends TestCase
             MockResponse::make(['error' => 'Missing number or text'], 400)
         );
 
-        $response = $this->message->sendText('', '');
+        $data = $this->message->sendText('', '');
 
-        $this->assertFalse($response->successful());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -402,10 +390,9 @@ class UazapiMessageTest extends TestCase
             MockResponse::make(['error' => 'Rate limit exceeded'], 429)
         );
 
-        $response = $this->message->sendText('5511999999999', 'Test');
+        $data = $this->message->sendText('5511999999999', 'Test');
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(429, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -415,13 +402,12 @@ class UazapiMessageTest extends TestCase
             MockResponse::make(['error' => 'Failed to upload media'], 500)
         );
 
-        $response = $this->message->sendImage(
+        $data = $this->message->sendImage(
             '5511999999999',
             'https://invalid-url.com/image.jpg'
         );
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(500, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 }
 

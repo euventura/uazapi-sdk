@@ -73,9 +73,16 @@ abstract class UazapiResource
      * }
      * ```
      */
-    public function send(Request $request): Response|Throwable
+    public function send(Request $request): ?array
     {
-        return $this->connector->send($request);
+        try {
+            $response = $this->connector->send($request);
+            if ($response->successful()) {
+                return $response->json();
+            }
+            return $response->json() ?? ['error' => 'Request failed', 'status' => $response->status()];
+        } catch (Throwable $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace UazApi\Tests;
 
-use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 use UazApi\UazapiQuickReply;
 
@@ -23,10 +22,9 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($this->mockQuickReplyData(), 200)
         );
 
-        $response = $this->quickReply->getAll();
+        $data = $this->quickReply->getAll();
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertIsArray($data);
         $this->assertArrayHasKey('shortCut', $data[0]);
         $this->assertEquals('saudacao', $data[0]['shortCut']);
@@ -49,10 +47,9 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->quickReply->createText('boas-vindas', 'Bem-vindo!');
+        $data = $this->quickReply->createText('boas-vindas', 'Bem-vindo!');
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('boas-vindas', $data['shortCut']);
         $this->assertEquals('Bem-vindo!', $data['text']);
     }
@@ -73,14 +70,13 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->quickReply->createMedia(
+        $data = $this->quickReply->createMedia(
             'catalogo',
             'image',
             'https://exemplo.com/catalogo.jpg'
         );
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('image', $data['type']);
         $this->assertEquals('catalogo', $data['shortCut']);
     }
@@ -102,15 +98,14 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->quickReply->createMedia(
+        $data = $this->quickReply->createMedia(
             'tabela',
             'document',
             'https://exemplo.com/precos.pdf',
             'Tabela de Preços.pdf'
         );
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('document', $data['type']);
         $this->assertEquals('Tabela de Preços.pdf', $data['docName']);
     }
@@ -131,14 +126,13 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->quickReply->updateText(
+        $data = $this->quickReply->updateText(
             'rb9da9c03637452',
             'saudacao-nova',
             'Olá! Bem-vindo à nossa empresa!'
         );
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('saudacao-nova', $data['shortCut']);
         $this->assertEquals('Olá! Bem-vindo à nossa empresa!', $data['text']);
     }
@@ -159,15 +153,14 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->quickReply->updateMedia(
+        $data = $this->quickReply->updateMedia(
             'rb9da9c03637452',
             'catalogo-atualizado',
             'image',
             'https://exemplo.com/novo-catalogo.jpg'
         );
 
-        $this->assertTrue($response->successful());
-        $data = $response->json();
+        $this->assertIsArray($data);
         $this->assertEquals('catalogo-atualizado', $data['shortCut']);
     }
 
@@ -184,10 +177,10 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->quickReply->delete('rb9da9c03637452');
+        $data = $this->quickReply->delete('rb9da9c03637452');
 
-        $this->assertTrue($response->successful());
-        $this->assertTrue($response->json()['success']);
+        $this->assertIsArray($data);
+        $this->assertTrue($data['success']);
     }
 
     /** @test */
@@ -205,14 +198,14 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->quickReply->edit(
+        $data = $this->quickReply->edit(
             shortCut: 'despedida',
             type: 'text',
             text: 'Até logo!'
         );
 
-        $this->assertTrue($response->successful());
-        $this->assertEquals('despedida', $response->json()['shortCut']);
+        $this->assertIsArray($data);
+        $this->assertEquals('despedida', $data['shortCut']);
     }
 
     /** @test */
@@ -230,14 +223,14 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make($mockData, 200)
         );
 
-        $response = $this->quickReply->edit(
+        $data = $this->quickReply->edit(
             shortCut: 'ola-atualizado',
             type: 'text',
             id: 'rb9da9c03637452',
             text: 'Olá! Atualizado!'
         );
 
-        $this->assertTrue($response->successful());
+        $this->assertIsArray($data);
     }
 
     /** @test */
@@ -247,10 +240,9 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make(['error' => 'Shortcut already exists'], 400)
         );
 
-        $response = $this->quickReply->createText('saudacao', 'Teste');
+        $data = $this->quickReply->createText('saudacao', 'Teste');
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(400, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -260,14 +252,13 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make(['error' => 'Template not found'], 404)
         );
 
-        $response = $this->quickReply->updateText(
+        $data = $this->quickReply->updateText(
             'nonexistent-id',
             'test',
             'Test'
         );
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(404, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -279,14 +270,13 @@ class UazapiQuickReplyTest extends TestCase
             ], 403)
         );
 
-        $response = $this->quickReply->updateText(
+        $data = $this->quickReply->updateText(
             'whatsapp-id',
             'test',
             'Test'
         );
 
-        $this->assertFalse($response->successful());
-        $this->assertEquals(403, $response->status());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -296,13 +286,13 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make(['error' => 'Text is required for type text'], 400)
         );
 
-        $response = $this->quickReply->edit(
+        $data = $this->quickReply->edit(
             shortCut: 'test',
             type: 'text'
         // Missing text parameter
         );
 
-        $this->assertFalse($response->successful());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -312,13 +302,13 @@ class UazapiQuickReplyTest extends TestCase
             MockResponse::make(['error' => 'File is required for media types'], 400)
         );
 
-        $response = $this->quickReply->edit(
+        $data = $this->quickReply->edit(
             shortCut: 'test',
             type: 'image'
         // Missing file parameter
         );
 
-        $this->assertFalse($response->successful());
+        $this->assertArrayHasKey('error', $data);
     }
 
     /** @test */
@@ -339,14 +329,14 @@ class UazapiQuickReplyTest extends TestCase
                 MockResponse::make($mockData, 200)
             );
 
-            $response = $this->quickReply->createMedia(
+            $data = $this->quickReply->createMedia(
                 'test-' . $type,
                 $type,
                 'https://exemplo.com/file.' . $type
             );
 
-            $this->assertTrue($response->successful());
-            $this->assertEquals($type, $response->json()['type']);
+            $this->assertIsArray($data);
+            $this->assertEquals($type, $data['type']);
         }
     }
 }
