@@ -2,6 +2,8 @@
 
 SDK completo em PHP para integração com a API UazAPI do WhatsApp. Feita Com Saloon.
 
+[![codecov](https://codecov.io/gh/euventura/uazapi-sdk/graph/badge.svg?token=PLOEADLL22)](https://codecov.io/gh/euventura/uazapi-sdk)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ## 📞 Uazapi
 
 - Documentação da API: https://docs.uazapi.com
@@ -41,7 +43,3 @@ $uazapi->message()->sendDocument('5512999999999', 'https://exemplo.com/doc.pdf',
 // Localização
 $uazapi->message()->sendLocation('5511999999999', -23.5505199, -46.6333094, 'Av. Paulista');
 ```
-
-## 📝 Licença
-
-MIT
