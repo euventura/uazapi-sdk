@@ -1,6 +1,6 @@
 <?php
 
-namespace euventura\uazapiSdk;
+namespace euventura\UazapiSdk;
 
 use Saloon\Http\Connector;
 
