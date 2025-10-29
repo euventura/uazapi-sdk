@@ -1,7 +1,8 @@
 <?php
 
-namespace euventura\UazapiSdk;
+namespace euventura\UazapiSdk\Resources;
 
+use euventura\UazapiSdk\arrayResposta;
 use euventura\UazapiSdk\Requests\Profile\UpdateProfileImageRequest;
 use euventura\UazapiSdk\Requests\Profile\UpdateProfileNameRequest;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace euventura\UazapiSdk;
+namespace euventura\UazapiSdk\Resources;
 
 use euventura\UazapiSdk\Requests\Community\CreateCommunityRequest;
 use euventura\UazapiSdk\Requests\Community\EditCommunityGroupsRequest;

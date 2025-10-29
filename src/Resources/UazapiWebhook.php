@@ -1,7 +1,8 @@
 <?php
 
-namespace euventura\UazapiSdk;
+namespace euventura\UazapiSdk\Resources;
 
+use euventura\UazapiSdk\arrayResposta;
 use euventura\UazapiSdk\Requests\Webhook\ConfigureWebhookRequest;
 use euventura\UazapiSdk\Requests\Webhook\GetWebhookRequest;
 

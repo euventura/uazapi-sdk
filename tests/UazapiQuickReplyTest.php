@@ -2,8 +2,8 @@
 
 namespace euventura\UazapiSdk\Tests;
 
+use euventura\UazapiSdk\Resources\UazapiQuickReply;
 use Saloon\Http\Faking\MockResponse;
-use euventura\UazapiSdk\UazapiQuickReply;
 
 class UazapiQuickReplyTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace euventura\UazapiSdk\Tests;
 
+use euventura\UazapiSdk\Resources\UazapiWebhook;
 use Saloon\Http\Faking\MockResponse;
-use euventura\UazapiSdk\UazapiWebhook;
 
 class UazapiWebhookTest extends TestCase
 {

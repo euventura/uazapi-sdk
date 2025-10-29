@@ -2,12 +2,12 @@
 
 namespace euventura\UazapiSdk\Tests;
 
+use euventura\UazapiSdk\Resources\UazapiInstance;
+use euventura\UazapiSdk\Resources\UazapiMessage;
+use euventura\UazapiSdk\Resources\UazapiProfile;
+use euventura\UazapiSdk\Resources\UazapiQuickReply;
+use euventura\UazapiSdk\Resources\UazapiWebhook;
 use euventura\UazapiSdk\Uazapi;
-use euventura\UazapiSdk\UazapiInstance;
-use euventura\UazapiSdk\UazapiMessage;
-use euventura\UazapiSdk\UazapiProfile;
-use euventura\UazapiSdk\UazapiQuickReply;
-use euventura\UazapiSdk\UazapiWebhook;
 
 class UazapiTest extends TestCase
 {

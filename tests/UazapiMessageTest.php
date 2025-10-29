@@ -2,8 +2,8 @@
 
 namespace euventura\UazapiSdk\Tests;
 
+use euventura\UazapiSdk\Resources\UazapiMessage;
 use Saloon\Http\Faking\MockResponse;
-use euventura\UazapiSdk\UazapiMessage;
 
 class UazapiMessageTest extends TestCase
 {

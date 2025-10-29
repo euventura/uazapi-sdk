@@ -2,8 +2,8 @@
 
 namespace euventura\UazapiSdk\Tests;
 
+use euventura\UazapiSdk\Resources\UazapiProfile;
 use Saloon\Http\Faking\MockResponse;
-use euventura\UazapiSdk\UazapiProfile;
 
 class UazapiProfileTest extends TestCase
 {

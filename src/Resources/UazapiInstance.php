@@ -1,7 +1,8 @@
 <?php
 
-namespace euventura\UazapiSdk;
+namespace euventura\UazapiSdk\Resources;
 
+use euventura\UazapiSdk\arrayResposta;
 use euventura\UazapiSdk\Requests\Instance\ConnectRequest;
 use euventura\UazapiSdk\Requests\Instance\DeleteInstanceRequest;
 use euventura\UazapiSdk\Requests\Instance\DisconnectRequest;

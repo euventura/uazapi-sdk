@@ -2,6 +2,12 @@
 
 namespace euventura\UazapiSdk;
 
+use euventura\UazapiSdk\Resources\UazapiGroup;
+use euventura\UazapiSdk\Resources\UazapiInstance;
+use euventura\UazapiSdk\Resources\UazapiMessage;
+use euventura\UazapiSdk\Resources\UazapiProfile;
+use euventura\UazapiSdk\Resources\UazapiQuickReply;
+use euventura\UazapiSdk\Resources\UazapiWebhook;
 use Saloon\Http\Connector;
 
 /**
