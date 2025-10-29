@@ -41,7 +41,7 @@ $uazapi->message()->sendDocument('5511999999999', 'https://exemplo.com/doc.pdf',
 $uazapi->message()->sendLocation('5511999999999', -23.5505199, -46.6333094, 'Av. Paulista');
 ```
 
-## 📞 UazAPI
+## 📞 Uazapi
 
 - Documentação da API: https://docs.uazapi.com
 - Site oficial: https://uazapi.com
