@@ -11,7 +11,7 @@ SDK completo em PHP para integração com a API UazAPI do WhatsApp. Feita Com Sa
 
 ## 📋 Requisitos
 
-- PHP 8.0 ou superior
+- PHP 8.1 ou superior
 - Composer
 
 ## 📦 Instalação
