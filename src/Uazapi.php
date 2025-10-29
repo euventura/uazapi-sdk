@@ -148,4 +148,32 @@ class Uazapi
     {
         return new UazapiWebhook($this->connector);
     }
+
+    /**
+     * Retorna a instância do resource de grupos e comunidades
+     *
+     * Fornece acesso aos métodos de gerenciamento de grupos e comunidades,
+     * permitindo criar, modificar, gerenciar participantes e configurar grupos.
+     *
+     * @return UazapiGroup
+     *
+     * @example
+     * ```php
+     * // Criar grupo
+     * $uazapi->groups()->create('Meu Grupo', ['5511999999999']);
+     *
+     * // Listar grupos
+     * $uazapi->groups()->list();
+     *
+     * // Gerenciar participantes
+     * $uazapi->groups()->updateParticipants('120363308883996631@g.us', 'add', ['5511888888888']);
+     *
+     * // Criar comunidade
+     * $uazapi->groups()->createCommunity('Minha Comunidade');
+     * ```
+     */
+    public function groups(): UazapiGroup
+    {
+        return new UazapiGroup($this->connector);
+    }
 }

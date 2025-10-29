@@ -1,9 +1,9 @@
 <?php
 
-namespace UazApi;
+namespace euventura\UazapiSdk;
 
-use UazApi\Requests\Webhook\ConfigureWebhookRequest;
-use UazApi\Requests\Webhook\GetWebhookRequest;
+use euventura\UazapiSdk\Requests\Webhook\ConfigureWebhookRequest;
+use euventura\UazapiSdk\Requests\Webhook\GetWebhookRequest;
 
 /**
  * UazAPI Webhook Resource

@@ -1,12 +1,13 @@
 <?php
 
-namespace UazApi;
+namespace euventura\UazapiSdk;
 
-use UazApi\Requests\Message\SendButtonsRequest;
-use UazApi\Requests\Message\SendContactRequest;
-use UazApi\Requests\Message\SendLocationRequest;
-use UazApi\Requests\Message\SendMediaRequest;
-use UazApi\Requests\Message\SendTextRequest;
+use euventura\UazapiSdk\Requests\Message\SendButtonsRequest;
+use euventura\UazapiSdk\Requests\Message\SendContactRequest;
+use euventura\UazapiSdk\Requests\Message\SendLocationRequest;
+use euventura\UazapiSdk\Requests\Message\SendMediaRequest;
+use euventura\UazapiSdk\Requests\Message\SendStatusRequest;
+use euventura\UazapiSdk\Requests\Message\SendTextRequest;
 
 /**
  * UazAPI Message Resource
@@ -101,7 +102,6 @@ class UazapiMessage extends UazapiResource
      */
     public function sendText(string  $number,
                              string  $text,
-                             array   $choices = [],
                              ?bool   $linkPreview = null,
                              ?string $linkPreviewTitle = null,
                              ?string $linkPreviewDescription = null,
@@ -119,7 +119,6 @@ class UazapiMessage extends UazapiResource
         return $this->send(new SendTextRequest(
             $number,
             $text,
-            $choices,
             $linkPreview,
             $linkPreviewTitle,
             $linkPreviewDescription,
@@ -653,6 +652,343 @@ class UazapiMessage extends UazapiResource
             forward: $options['forward'] ?? null,
             track_source: $options['track_source'] ?? null,
             track_id: $options['track_id'] ?? null
+        ));
+    }
+
+    /**
+     * Enviar story/status de texto
+     *
+     * Envia um story (status) de texto com estilo e cor de fundo personalizados.
+     *
+     * Cores de fundo disponíveis (1-19):
+     * - 1-3: Tons de amarelo
+     * - 4-6: Tons de verde
+     * - 7-9: Tons de azul
+     * - 10-12: Tons de lilás
+     * - 13: Magenta
+     * - 14-15: Tons de rosa
+     * - 16: Marrom claro
+     * - 17-19: Tons de cinza (19 é o padrão)
+     *
+     * Fontes disponíveis (0-8):
+     * - 0: Padrão
+     * - 1-8: Estilos alternativos
+     *
+     * @param string $text Texto do status (máximo 656 caracteres)
+     * @param int|null $backgroundColor Código da cor de fundo (1-19, padrão: 19)
+     * @param int|null $font Estilo da fonte (0-8, padrão: 0)
+     * @param string|null $track_source Origem do rastreamento
+     * @param string|null $track_id ID de rastreamento
+     *
+     * @return ?array Resposta com dados do status enviado
+     *
+     * @example
+     * ```php
+     * // Status de texto simples
+     * $message->sendStatusText('Novidades chegando em breve!');
+     *
+     * // Com cor de fundo azul
+     * $message->sendStatusText('Promoção de hoje!', backgroundColor: 7);
+     *
+     * // Com cor e fonte personalizada
+     * $message->sendStatusText('Feliz Natal!', backgroundColor: 4, font: 3);
+     *
+     * // Com rastreamento
+     * $message->sendStatusText('Confira!', backgroundColor: 13, font: 1, track_source: 'marketing');
+     * ```
+     */
+    public function sendStatusText(
+        string  $text,
+        ?int    $backgroundColor = null,
+        ?int    $font = null,
+        ?string $track_source = null,
+        ?string $track_id = null
+    ): ?array
+    {
+        return $this->send(new SendStatusRequest(
+            type: 'text',
+            text: $text,
+            background_color: $backgroundColor,
+            font: $font,
+            track_source: $track_source,
+            track_id: $track_id
+        ));
+    }
+
+    /**
+     * Enviar story/status de imagem
+     *
+     * Envia um story (status) com uma imagem e legenda opcional.
+     *
+     * Formatos suportados:
+     * - JPEG
+     * - PNG
+     * - GIF
+     *
+     * @param string $file URL ou Base64 da imagem
+     * @param string|null $caption Legenda/texto descritivo (opcional)
+     * @param string|null $mimetype MIME type do arquivo (opcional)
+     * @param string|null $track_source Origem do rastreamento
+     * @param string|null $track_id ID de rastreamento
+     *
+     * @return ?array Resposta com dados do status enviado
+     *
+     * @example
+     * ```php
+     * // Status de imagem simples
+     * $message->sendStatusImage('https://exemplo.com/foto.jpg');
+     *
+     * // Com legenda
+     * $message->sendStatusImage('https://exemplo.com/foto.jpg', 'Confira nossa novidade!');
+     *
+     * // Com base64
+     * $message->sendStatusImage('data:image/jpeg;base64,/9j/4AAQ...', 'Promoção do dia!');
+     *
+     * // Com rastreamento
+     * $message->sendStatusImage(
+     *     'https://exemplo.com/produto.jpg',
+     *     'Novo produto disponível!',
+     *     track_source: 'vendas'
+     * );
+     * ```
+     */
+    public function sendStatusImage(
+        string  $file,
+        ?string $caption = null,
+        ?string $mimetype = null,
+        ?string $track_source = null,
+        ?string $track_id = null
+    ): ?array
+    {
+        return $this->send(new SendStatusRequest(
+            type: 'image',
+            text: $caption,
+            file: $file,
+            mimetype: $mimetype,
+            track_source: $track_source,
+            track_id: $track_id
+        ));
+    }
+
+    /**
+     * Enviar story/status de vídeo
+     *
+     * Envia um story (status) com um vídeo, thumbnail opcional e legenda.
+     *
+     * Formatos suportados:
+     * - MP4 (recomendado)
+     * - MOV
+     *
+     * @param string $file URL ou Base64 do vídeo
+     * @param string|null $caption Legenda/texto descritivo (opcional)
+     * @param string|null $thumbnail URL ou Base64 da miniatura (opcional)
+     * @param string|null $mimetype MIME type do arquivo (opcional)
+     * @param string|null $track_source Origem do rastreamento
+     * @param string|null $track_id ID de rastreamento
+     *
+     * @return ?array Resposta com dados do status enviado
+     *
+     * @example
+     * ```php
+     * // Status de vídeo simples
+     * $message->sendStatusVideo('https://exemplo.com/video.mp4');
+     *
+     * // Com legenda
+     * $message->sendStatusVideo('https://exemplo.com/video.mp4', 'Tutorial completo!');
+     *
+     * // Com thumbnail e legenda
+     * $message->sendStatusVideo(
+     *     'https://exemplo.com/video.mp4',
+     *     'Veja o que preparamos!',
+     *     'https://exemplo.com/thumb.jpg'
+     * );
+     *
+     * // Com todas as opções
+     * $message->sendStatusVideo(
+     *     'https://exemplo.com/promo.mp4',
+     *     'Promoção imperdível!',
+     *     'https://exemplo.com/thumb.jpg',
+     *     'video/mp4',
+     *     'marketing',
+     *     'promo-001'
+     * );
+     * ```
+     */
+    public function sendStatusVideo(
+        string  $file,
+        ?string $caption = null,
+        ?string $thumbnail = null,
+        ?string $mimetype = null,
+        ?string $track_source = null,
+        ?string $track_id = null
+    ): ?array
+    {
+        return $this->send(new SendStatusRequest(
+            type: 'video',
+            text: $caption,
+            file: $file,
+            thumbnail: $thumbnail,
+            mimetype: $mimetype,
+            track_source: $track_source,
+            track_id: $track_id
+        ));
+    }
+
+    /**
+     * Enviar story/status de áudio
+     *
+     * Envia um story (status) com um áudio normal (não mensagem de voz).
+     *
+     * Formatos suportados:
+     * - MP3
+     * - OGG
+     * - WAV (convertido automaticamente para OGG/OPUS)
+     *
+     * @param string $file URL ou Base64 do áudio
+     * @param string|null $mimetype MIME type do arquivo (opcional)
+     * @param string|null $track_source Origem do rastreamento
+     * @param string|null $track_id ID de rastreamento
+     *
+     * @return ?array Resposta com dados do status enviado
+     *
+     * @example
+     * ```php
+     * // Status de áudio simples
+     * $message->sendStatusAudio('https://exemplo.com/musica.mp3');
+     *
+     * // Com rastreamento
+     * $message->sendStatusAudio(
+     *     'https://exemplo.com/podcast.mp3',
+     *     track_source: 'conteudo'
+     * );
+     * ```
+     */
+    public function sendStatusAudio(
+        string  $file,
+        ?string $mimetype = null,
+        ?string $track_source = null,
+        ?string $track_id = null
+    ): ?array
+    {
+        return $this->send(new SendStatusRequest(
+            type: 'audio',
+            file: $file,
+            mimetype: $mimetype,
+            track_source: $track_source,
+            track_id: $track_id
+        ));
+    }
+
+    /**
+     * Enviar story/status de mensagem de voz (PTT)
+     *
+     * Envia um story (status) com uma mensagem de voz (Push-to-Talk).
+     *
+     * Formatos suportados:
+     * - OGG (recomendado para PTT)
+     * - MP3
+     *
+     * @param string $file URL ou Base64 do áudio
+     * @param string|null $mimetype MIME type do arquivo (opcional)
+     * @param string|null $track_source Origem do rastreamento
+     * @param string|null $track_id ID de rastreamento
+     *
+     * @return ?array Resposta com dados do status enviado
+     *
+     * @example
+     * ```php
+     * // Status de voz simples
+     * $message->sendStatusVoice('https://exemplo.com/voz.ogg');
+     *
+     * // Com rastreamento
+     * $message->sendStatusVoice(
+     *     'https://exemplo.com/recado.ogg',
+     *     track_source: 'pessoal',
+     *     track_id: 'msg-001'
+     * );
+     * ```
+     */
+    public function sendStatusVoice(
+        string  $file,
+        ?string $mimetype = null,
+        ?string $track_source = null,
+        ?string $track_id = null
+    ): ?array
+    {
+        return $this->send(new SendStatusRequest(
+            type: 'ptt',
+            file: $file,
+            mimetype: $mimetype,
+            track_source: $track_source,
+            track_id: $track_id
+        ));
+    }
+
+    /**
+     * Enviar story/status genérico
+     *
+     * Método genérico para enviar qualquer tipo de story/status.
+     * Os métodos específicos (sendStatusText, sendStatusImage, etc) são atalhos para este método.
+     *
+     * Tipos suportados:
+     * - text: Texto com estilo e cor
+     * - image: Imagem com legenda
+     * - video: Vídeo com thumbnail e legenda
+     * - audio: Áudio normal
+     * - myaudio: Áudio alternativo
+     * - ptt: Mensagem de voz
+     *
+     * @param string $type Tipo do status (text, image, video, audio, myaudio, ptt)
+     * @param string|null $text Texto principal ou legenda
+     * @param int|null $backgroundColor Cor de fundo (apenas para type=text)
+     * @param int|null $font Estilo da fonte (apenas para type=text)
+     * @param string|null $file URL ou Base64 do arquivo de mídia
+     * @param string|null $thumbnail URL ou Base64 da miniatura (para vídeos)
+     * @param string|null $mimetype MIME type do arquivo
+     * @param string|null $track_source Origem do rastreamento
+     * @param string|null $track_id ID de rastreamento
+     *
+     * @return ?array Resposta com dados do status enviado
+     *
+     * @example
+     * ```php
+     * // Status de texto
+     * $message->sendStatus('text', text: 'Olá!', backgroundColor: 7);
+     *
+     * // Status de imagem
+     * $message->sendStatus('image', file: 'https://exemplo.com/foto.jpg', text: 'Confira!');
+     *
+     * // Status de vídeo com thumbnail
+     * $message->sendStatus(
+     *     'video',
+     *     file: 'https://exemplo.com/video.mp4',
+     *     thumbnail: 'https://exemplo.com/thumb.jpg',
+     *     text: 'Novo vídeo!'
+     * );
+     * ```
+     */
+    public function sendStatus(
+        string  $type,
+        ?string $text = null,
+        ?int    $backgroundColor = null,
+        ?int    $font = null,
+        ?string $file = null,
+        ?string $thumbnail = null,
+        ?string $mimetype = null,
+        ?string $track_source = null,
+        ?string $track_id = null
+    ): ?array
+    {
+        return $this->send(new SendStatusRequest(
+            type: $type,
+            text: $text,
+            background_color: $backgroundColor,
+            font: $font,
+            file: $file,
+            thumbnail: $thumbnail,
+            mimetype: $mimetype,
+            track_source: $track_source,
+            track_id: $track_id
         ));
     }
 }

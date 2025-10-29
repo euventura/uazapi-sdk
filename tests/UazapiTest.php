@@ -1,13 +1,13 @@
 <?php
 
-namespace UazApi\Tests;
+namespace euventura\UazapiSdk\Tests;
 
-use UazApi\Uazapi;
-use UazApi\UazapiInstance;
-use UazApi\UazapiMessage;
-use UazApi\UazapiProfile;
-use UazApi\UazapiQuickReply;
-use UazApi\UazapiWebhook;
+use euventura\UazapiSdk\Uazapi;
+use euventura\UazapiSdk\UazapiInstance;
+use euventura\UazapiSdk\UazapiMessage;
+use euventura\UazapiSdk\UazapiProfile;
+use euventura\UazapiSdk\UazapiQuickReply;
+use euventura\UazapiSdk\UazapiWebhook;
 
 class UazapiTest extends TestCase
 {

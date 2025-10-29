@@ -1,9 +1,9 @@
 <?php
 
-namespace UazApi;
+namespace euventura\UazapiSdk;
 
-use UazApi\Requests\Profile\UpdateProfileImageRequest;
-use UazApi\Requests\Profile\UpdateProfileNameRequest;
+use euventura\UazapiSdk\Requests\Profile\UpdateProfileImageRequest;
+use euventura\UazapiSdk\Requests\Profile\UpdateProfileNameRequest;
 
 /**
  * UazAPI Profile Resource

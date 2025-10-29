@@ -1,6 +1,6 @@
 <?php
 
-namespace UazApi\Requests\QuickReply;
+namespace euventura\UazapiSdk\Requests\QuickReply;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;

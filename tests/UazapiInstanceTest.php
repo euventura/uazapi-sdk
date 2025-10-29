@@ -1,9 +1,9 @@
 <?php
 
-namespace UazApi\Tests;
+namespace euventura\UazapiSdk\Tests;
 
 use Saloon\Http\Faking\MockResponse;
-use UazApi\UazapiInstance;
+use euventura\UazapiSdk\UazapiInstance;
 
 class UazapiInstanceTest extends TestCase
 {

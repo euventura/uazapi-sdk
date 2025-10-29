@@ -1,14 +1,14 @@
 <?php
 
-namespace UazApi;
+namespace euventura\UazapiSdk;
 
-use UazApi\Requests\Instance\ConnectRequest;
-use UazApi\Requests\Instance\DeleteInstanceRequest;
-use UazApi\Requests\Instance\DisconnectRequest;
-use UazApi\Requests\Instance\GetPrivacyRequest;
-use UazApi\Requests\Instance\StatusRequest;
-use UazApi\Requests\Instance\UpdateInstanceNameRequest;
-use UazApi\Requests\Instance\UpdatePrivacyRequest;
+use euventura\UazapiSdk\Requests\Instance\ConnectRequest;
+use euventura\UazapiSdk\Requests\Instance\DeleteInstanceRequest;
+use euventura\UazapiSdk\Requests\Instance\DisconnectRequest;
+use euventura\UazapiSdk\Requests\Instance\GetPrivacyRequest;
+use euventura\UazapiSdk\Requests\Instance\StatusRequest;
+use euventura\UazapiSdk\Requests\Instance\UpdateInstanceNameRequest;
+use euventura\UazapiSdk\Requests\Instance\UpdatePrivacyRequest;
 
 /**
  * UazAPI Instance Resource

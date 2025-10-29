@@ -1,6 +1,6 @@
 <?php
 
-namespace UazApi;
+namespace euventura\UazapiSdk;
 
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;

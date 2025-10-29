@@ -1,9 +1,9 @@
 <?php
 
-namespace UazApi\Tests;
+namespace euventura\UazapiSdk\Tests;
 
 use Saloon\Http\Faking\MockResponse;
-use UazApi\UazapiMessage;
+use euventura\UazapiSdk\UazapiMessage;
 
 class UazapiMessageTest extends TestCase
 {
@@ -41,7 +41,7 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '5511999999999',
             'Confira: https://exemplo.com',
-            ['linkPreview' => true]
+            linkPreview: true
         );
 
         $this->assertIsArray($data);
@@ -57,13 +57,11 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '5511999999999',
             'https://exemplo.com',
-            [
-                'linkPreview' => true,
-                'linkPreviewTitle' => 'Título Custom',
-                'linkPreviewDescription' => 'Descrição custom',
-                'linkPreviewImage' => 'https://exemplo.com/thumb.jpg',
-                'linkPreviewLarge' => true
-            ]
+            linkPreview: true,
+            linkPreviewTitle: 'Título Custom',
+            linkPreviewDescription: 'Descrição custom',
+            linkPreviewImage: 'https://exemplo.com/thumb.jpg',
+            linkPreviewLarge: true
         );
 
         $this->assertIsArray($data);
@@ -79,7 +77,7 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '5511999999999',
             'Mensagem com delay',
-            ['delay' => 2000]
+            messageDelay: 2000
         );
 
         $this->assertIsArray($data);
@@ -95,7 +93,7 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '120363012345678901@g.us',
             'Olá @todos!',
-            ['mentions' => 'all']
+            mentions: 'all'
         );
 
         $this->assertIsArray($data);
@@ -111,7 +109,7 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '5511999999999',
             'Respondendo sua mensagem',
-            ['replyid' => '3EB0538DA65A59F6D8A251']
+            replyid: '3EB0538DA65A59F6D8A251'
         );
 
         $this->assertIsArray($data);
@@ -302,10 +300,8 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '5511999999999',
             'Mensagem rastreada',
-            [
-                'track_source' => 'crm',
-                'track_id' => 'msg-12345'
-            ]
+            track_source: 'crm',
+            track_id: 'msg-12345'
         );
 
         $this->assertIsArray($data);
@@ -321,7 +317,7 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '5511999999999',
             'Teste',
-            ['readchat' => true]
+            readchat: true
         );
 
         $this->assertIsArray($data);
@@ -337,7 +333,7 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '5511999999999',
             'Teste',
-            ['readmessages' => true]
+            readmessages: true
         );
 
         $this->assertIsArray($data);
@@ -353,7 +349,7 @@ class UazapiMessageTest extends TestCase
         $data = $this->message->sendText(
             '5511999999999',
             'Mensagem encaminhada',
-            ['forward' => true]
+            forward: true
         );
 
         $this->assertIsArray($data);

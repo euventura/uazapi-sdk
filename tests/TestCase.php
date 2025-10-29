@@ -1,11 +1,11 @@
 <?php
 
-namespace UazApi\Tests;
+namespace euventura\UazapiSdk\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
-use UazApi\UazapiApiConnector;
+use euventura\UazapiSdk\UazapiApiConnector;
 
 /**
  * Base Test Case for UazAPI SDK Tests

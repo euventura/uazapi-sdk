@@ -1,6 +1,6 @@
 <?php
 
-namespace UazApi\Requests\Webhook;
+namespace euventura\UazapiSdk\Requests\Webhook;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

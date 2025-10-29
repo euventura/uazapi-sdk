@@ -1,6 +1,6 @@
 <?php
 
-namespace UazApi\Requests\Instance;
+namespace euventura\UazapiSdk\Requests\Instance;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;

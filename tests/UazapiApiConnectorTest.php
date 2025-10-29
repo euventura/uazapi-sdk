@@ -1,8 +1,8 @@
 <?php
 
-namespace UazApi\Tests;
+namespace euventura\UazapiSdk\Tests;
 
-use UazApi\UazapiApiConnector;
+use euventura\UazapiSdk\UazapiApiConnector;
 
 class UazapiApiConnectorTest extends TestCase
 {

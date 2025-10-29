@@ -1,9 +1,9 @@
 <?php
 
-namespace UazApi;
+namespace euventura\UazapiSdk;
 
-use UazApi\Requests\QuickReply\EditQuickReplyRequest;
-use UazApi\Requests\QuickReply\GetAllQuickRepliesRequest;
+use euventura\UazapiSdk\Requests\QuickReply\EditQuickReplyRequest;
+use euventura\UazapiSdk\Requests\QuickReply\GetAllQuickRepliesRequest;
 
 /**
  * UazAPI Quick Reply Resource

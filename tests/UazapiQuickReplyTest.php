@@ -1,9 +1,9 @@
 <?php
 
-namespace UazApi\Tests;
+namespace euventura\UazapiSdk\Tests;
 
 use Saloon\Http\Faking\MockResponse;
-use UazApi\UazapiQuickReply;
+use euventura\UazapiSdk\UazapiQuickReply;
 
 class UazapiQuickReplyTest extends TestCase
 {
