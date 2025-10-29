@@ -405,5 +405,138 @@ class UazapiMessageTest extends TestCase
 
         $this->assertArrayHasKey('error', $data);
     }
-}
 
+    /** @test */
+    public function it_can_send_buttons()
+    {
+        $mockData = $this->mockMessageData();
+        $mockData['messageType'] = 'buttons';
+
+        $this->mockClient->addResponse(
+            MockResponse::make($mockData, 200)
+        );
+
+        $data = $this->message->sendButtons(
+            '5511999999999',
+            'Escolha uma opção:',
+            ['Sim', 'Não', 'Talvez']
+        );
+
+        $this->assertIsArray($data);
+    }
+
+    /** @test */
+    public function it_can_send_buttons_list()
+    {
+        $mockData = $this->mockMessageData();
+        $mockData['messageType'] = 'list';
+
+        $this->mockClient->addResponse(
+            MockResponse::make($mockData, 200)
+        );
+
+        $choices = [
+            'Item 1',
+            'Item 2',
+            'Item 3'
+        ];
+
+        $data = $this->message->sendButtons(
+            '5511999999999',
+            'Selecione:',
+            $choices,
+            'list',
+            footerText: 'Rodapé',
+            listButton: 'Abrir lista'
+        );
+
+        $this->assertIsArray($data);
+    }
+
+    /** @test */
+    public function it_can_send_status_text()
+    {
+        $mockData = $this->mockMessageData();
+        $mockData['messageType'] = 'status';
+
+        $this->mockClient->addResponse(
+            MockResponse::make($mockData, 200)
+        );
+
+        $data = $this->message->sendStatusText('Novidade!', backgroundColor: 7, font: 1);
+
+        $this->assertIsArray($data);
+    }
+
+    /** @test */
+    public function it_can_send_status_image()
+    {
+        $mockData = $this->mockMessageData();
+        $mockData['messageType'] = 'status-image';
+
+        $this->mockClient->addResponse(
+            MockResponse::make($mockData, 200)
+        );
+
+        $data = $this->message->sendStatusImage('https://exemplo.com/status.jpg', 'Legenda');
+
+        $this->assertIsArray($data);
+    }
+
+    /** @test */
+    public function it_can_send_status_video()
+    {
+        $mockData = $this->mockMessageData();
+        $mockData['messageType'] = 'status-video';
+
+        $this->mockClient->addResponse(
+            MockResponse::make($mockData, 200)
+        );
+
+        $data = $this->message->sendStatusVideo('https://exemplo.com/status.mp4', 'Veja');
+
+        $this->assertIsArray($data);
+    }
+
+    /** @test */
+    public function it_can_send_status_audio_and_voice()
+    {
+        $mockData = $this->mockMessageData();
+        $mockData['messageType'] = 'status-audio';
+
+        $this->mockClient->addResponse(
+            MockResponse::make($mockData, 200)
+        );
+
+        $data = $this->message->sendStatusAudio('https://exemplo.com/status.mp3');
+
+        $this->assertIsArray($data);
+
+        // voice
+        $mockData2 = $this->mockMessageData();
+        $mockData2['messageType'] = 'status-ptt';
+
+        $this->mockClient->addResponse(
+            MockResponse::make($mockData2, 200)
+        );
+
+        $data2 = $this->message->sendStatusVoice('https://exemplo.com/status.ogg');
+
+        $this->assertIsArray($data2);
+    }
+
+    /** @test */
+    public function it_can_send_media_generic()
+    {
+        $mockData = $this->mockMessageData();
+        $mockData['messageType'] = 'custom-media';
+
+        $this->mockClient->addResponse(
+            MockResponse::make($mockData, 200)
+        );
+
+        $data = $this->message->sendMedia('5511999999999', 'image', 'https://exemplo.com/photo.jpg', 'Legenda');
+
+        $this->assertIsArray($data);
+    }
+}
