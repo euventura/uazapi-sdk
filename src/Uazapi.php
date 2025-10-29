@@ -1,6 +1,8 @@
 <?php
 
-namespace UazApi;
+namespace euventura\uazapiSdk;
+
+use Saloon\Http\Connector;
 
 /**
  * UazAPI SDK - Classe principal para acesso aos recursos da API
@@ -27,9 +29,9 @@ class Uazapi
     /**
      * Instância do connector Saloon para comunicação com a API
      *
-     * @var \Saloon\Http\Connector
+     * @var Connector
      */
-    public \Saloon\Http\Connector $connector;
+    public Connector $connector;
 
     /**
      * Construtor do SDK UazAPI
